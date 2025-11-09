@@ -101,7 +101,7 @@ export default function CandidatarPage() {
           Preencha seus dados para solicitar entrada no grupo de networking.
         </p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="text-black">
           <InputField
             label="Nome Completo"
             id="nome"
