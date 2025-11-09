@@ -45,7 +45,7 @@ export default function CandidatarPage() {
     setStatus("Enviando...");
 
     try {
-      // 🔗 Chamada ao Backend (Next.js se conecta ao NestJS)
+      // 🔗 Chamada ao Backend (Usando a variável de ambiente)
       const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
       const response = await fetch(`${apiUrl}/candidaturas`, {
@@ -57,6 +57,7 @@ export default function CandidatarPage() {
       const data = await response.json();
 
       if (response.ok) {
+        // Verifica se o status é 200-299 (incluindo o 201 Created)
         setStatus(
           "✅ Candidatura enviada com sucesso! Você será notificado(a) por e-mail."
         );
@@ -67,7 +68,7 @@ export default function CandidatarPage() {
           motivoParticipacao: "",
         });
       } else {
-        // Exibe erros de validação do NestJS (class-validator)
+        // Trata erros de validação do NestJS (class-validator)
         const errorMsg = data.message
           ? Array.isArray(data.message)
             ? data.message.join("; ")
