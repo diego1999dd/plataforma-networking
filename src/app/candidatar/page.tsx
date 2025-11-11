@@ -1,5 +1,3 @@
-// frontend/src/app/candidatar/page.tsx
-
 "use client"; // Componente de Cliente para usar hooks e interatividade
 
 import { useState } from "react";
@@ -18,12 +16,12 @@ const InputField = ({
   required: boolean;
 }) => (
   <div className="mb-4">
-    <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+    <label htmlFor={id} className="block text-sm font-medium">
       {label}
     </label>
     <input
       id={id}
-      className="mt-1 block w-full rounded-md border border-gray-300 p-3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+      className="mt-1 block w-full rounded-md border border-muted p-3 shadow-sm"
       {...props}
     />
   </div>
@@ -92,12 +90,12 @@ export default function CandidatarPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center pt-12">
-      <div className="bg-white p-10 rounded-xl shadow-2xl w-full max-w-lg">
-        <h1 className="text-3xl font-extrabold mb-6 text-center text-indigo-700">
+    <div className="min-h-screen bg-bg flex flex-col items-center pt-12">
+      <div className="bg-accent p-10 rounded-xl shadow-2xl w-full max-w-lg">
+        <h1 className="text-3xl font-extrabold mb-6 text-center text-primary">
           Intenção de Participação
         </h1>
-        <p className="text-center text-gray-600 mb-8">
+        <p className="text-center text-muted mb-8">
           Preencha seus dados para solicitar entrada no grupo de networking.
         </p>
 
@@ -130,14 +128,14 @@ export default function CandidatarPage() {
           <div className="mb-6">
             <label
               htmlFor="motivoParticipacao"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium"
             >
               Por que você quer participar?
             </label>
             <textarea
               id="motivoParticipacao"
               rows={4}
-              className="mt-1 block w-full rounded-md border border-gray-300 p-3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full rounded-md border  p-3 shadow-sm"
               value={formData.motivoParticipacao}
               onChange={handleChange}
               required
@@ -146,10 +144,10 @@ export default function CandidatarPage() {
 
           <button
             type="submit"
-            className={`w-full py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white transition-all duration-200 ${
+            className={`cursor-pointer w-full py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white transition-all duration-200 ${
               isLoading
                 ? "bg-indigo-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
+                : "bg-primary focus:outline-none focus:ring-4 focus:ring-accent2 focus:ring-opacity-50"
             }`}
             disabled={isLoading}
           >
@@ -161,8 +159,8 @@ export default function CandidatarPage() {
           <p
             className={`mt-6 p-3 rounded-md text-center font-medium ${
               status.startsWith("✅")
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
+                ? "bg-light text-success"
+                : "bg-danger-light text-danger"
             }`}
           >
             {status}

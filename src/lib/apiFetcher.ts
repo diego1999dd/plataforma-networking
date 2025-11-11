@@ -25,7 +25,6 @@ export async function apiFetcher<T>(
   });
 
   if (!response.ok) {
-    // For 403, we give a specific message, but authenticatedFetch should handle it.
     if (response.status === 403) {
       throw new Error("Acesso não autorizado.");
     }

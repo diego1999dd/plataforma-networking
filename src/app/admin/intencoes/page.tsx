@@ -1,5 +1,3 @@
-// frontend/src/app/admin/intencoes/page.tsx
-
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
@@ -19,7 +17,7 @@ interface Candidatura {
 }
 
 export default function AdminIntencoesPage() {
-  const router = useRouter(); // Renomeamos isLoading do hook para evitar confusão com isLoadingData
+  const router = useRouter();
   const {
     apiKey,
     isAuthenticated,
@@ -28,8 +26,8 @@ export default function AdminIntencoesPage() {
   } = useAdminAuth();
 
   const [candidaturas, setCandidaturas] = useState<Candidatura[]>([]);
-  const [isLoadingData, setIsLoadingData] = useState(true); // Carregamento da requisição de dados
-  const [error, setError] = useState(""); // Função para buscar os dados (GET /admin/candidaturas)
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [error, setError] = useState("");
 
   const fetchCandidaturas = useCallback(async () => {
     if (!apiKey) {
@@ -49,7 +47,6 @@ export default function AdminIntencoesPage() {
       setCandidaturas(data);
     } catch (err: any) {
       if (err.message.includes("Acesso não autorizado")) {
-        // 🛑 PONTO CRÍTICO: Limpa a chave, usa replace e SAI imediatamente
         clearAuth();
         router.replace("/admin");
         return;
@@ -58,16 +55,14 @@ export default function AdminIntencoesPage() {
     } finally {
       setIsLoadingData(false);
     }
-  }, [apiKey, router, clearAuth]); // Efeito para proteção de rota e carregar dados
+  }, [apiKey, router, clearAuth]);
 
   useEffect(() => {
-    // 1. Redirecionamento de proteção (se o hook já leu o localStorage E não está autenticado)
     if (!isLoadingHook && !isAuthenticated) {
       router.replace("/admin");
-      return; // << SAÍDA IMEDIATA DO USEEFFECT
+      return;
     }
 
-    // 2. Busca de dados (só se autenticado E a leitura do localStorage terminou)
     if (!isLoadingHook && isAuthenticated && isLoadingData) {
       fetchCandidaturas();
     }
@@ -77,7 +72,7 @@ export default function AdminIntencoesPage() {
     isLoadingHook,
     isLoadingData,
     fetchCandidaturas,
-  ]); // Função de Ação (POST /aprovar ou /recusar) - Mantido inalterado
+  ]);
 
   const handleAction = async (id: number, action: "aprovar" | "recusar") => {
     if (
@@ -104,125 +99,131 @@ export default function AdminIntencoesPage() {
     } catch (err: any) {
       alert(`Falha na ação: ${err.message}`);
     }
-  }; // RENDERIZAÇÃO: Mostrar carregando se o hook ou os dados estiverem em trânsito
+  };
 
   if (isLoadingHook || isLoadingData) {
     return (
       <div className="flex justify-center items-center h-screen text-xl">
-                Carregando candidaturas...      {" "}
+        Carregando candidaturas...
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-8 text-center text-red-700 bg-red-100 border-red-500 border rounded-lg m-10">
-                <h2 className="text-xl font-semibold">Erro:</h2>       {" "}
-        <p>{error}</p>       {" "}
+      // Usando bg-danger-light e text-danger (inferidos das suas vars)
+      <div className="p-8 text-center bg-danger-light border border-danger-light rounded-lg m-10">
+        <h2 className="text-xl font-semibold text-danger">Erro:</h2>
+        <p className="text-danger">{error}</p>
         <button
           onClick={fetchCandidaturas}
-          className="mt-4 text-blue-500 hover:underline"
+          className="mt-4 text-primary hover:underline"
         >
-                    Tentar Novamente        {" "}
+          Tentar Novamente
         </button>
-               {" "}
         <button
           onClick={clearAuth}
-          className="mt-4 ml-4 text-red-500 hover:underline"
+          className="mt-4 ml-4 text-danger hover:underline"
         >
-                    Trocar Chave        {" "}
+          Trocar Chave
         </button>
-             {" "}
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-8">
-           {" "}
-      <h1 className="text-3xl font-extrabold mb-6 text-indigo-700">
-                Gestão de Candidaturas ({candidaturas.length})      {" "}
+    <div className="container mx-auto p-8 ">
+      {/* Usando text-primary2 para o título principal */}
+      <h1 className="text-3xl font-extrabold mb-6 text-primary2">
+        Gestão de Candidaturas ({candidaturas.length})
       </h1>
-           {" "}
       {candidaturas.length === 0 ? (
-        <p className="text-gray-600">Nenhuma candidatura encontrada.</p>
+        <p className="text-muted">Nenhuma candidatura encontrada.</p>
       ) : (
-        <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        // Tabela principal: Usando bg-accent para o container (para bom contraste)
+        <div className="overflow-x-auto bg-accent shadow-lg rounded-lg">
+          {/* Tabela */}
+          <table className="min-w-full divide-y divide-muted">
+            {/* Cabeçalho da Tabela - Usando bg-bg e text-muted */}
+            <thead className="bg-bg">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">
                   ID / Data
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">
                   Candidato
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">
                   Empresa / Motivo
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">
                   Ações
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+
+            {/* Corpo da Tabela - Usando divide-muted2 para divisores de linha */}
+            <tbody className="bg-accent divide-y divide-muted2">
               {candidaturas.map((candidato) => (
                 <tr
                   key={candidato.id}
                   className={
-                    candidato.status === "PENDENTE" ? "bg-yellow-50" : ""
+                    // Destaque para PENDENTE com a cor de background customizada
+                    candidato.status === "PENDENTE" ? "bg-bg" : "bg-accent"
                   }
                 >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <span className="font-bold">{candidato.id}</span>
+                  <td className="px-6 py-4 accentspace-nowrap text-sm text-muted2">
+                    <span className="font-bold text-black">{candidato.id}</span>
                     <br />
                     {new Date(candidato.dataCriacao).toLocaleDateString(
                       "pt-BR"
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
+                  <td className="px-6 py-4 accentspace-nowrap">
+                    <div className="text-sm font-medium text-black">
                       {candidato.nome}
                     </div>
-                    <div className="text-sm text-gray-500">
-                      {candidato.email}
-                    </div>
+                    <div className="text-sm text-muted2">{candidato.email}</div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
-                    <span className="font-medium">{candidato.empresa}</span>
+                  <td className="px-6 py-4 text-sm text-muted2 max-w-xs truncate">
+                    <span className="font-medium text-black">
+                      {candidato.empresa}
+                    </span>
                     <br />
                     <span title={candidato.motivoParticipacao}>
                       {candidato.motivoParticipacao?.substring(0, 50)}...
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 accentspace-nowrap">
+                    {/* Aplicação das cores de Status (Badges) */}
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         candidato.status === "APROVADA"
-                          ? "bg-green-100 text-green-800"
+                          ? "bg-light text-success" // SUCCESS (cores customizadas)
                           : candidato.status === "RECUSADA"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-yellow-100 text-yellow-800"
+                          ? "bg-danger-light text-danger" // DANGER (cores customizadas)
+                          : // PENDENTE: Usando Tailwind padrão (amarelo) como cor de Warning
+                            "bg-yellow-100 text-yellow-800"
                       }`}
                     >
                       {candidato.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 py-4 accentspace-nowrap text-sm font-medium">
                     {candidato.status === "PENDENTE" && (
                       <div className="flex space-x-3">
                         <button
                           onClick={() => handleAction(candidato.id, "aprovar")}
-                          className="text-green-600 hover:text-green-900 font-semibold text-sm"
+                          className="text-sucesss hover:opacity-75 font-semibold text-sm cursor-pointer"
                         >
                           APROVAR
                         </button>
                         <button
                           onClick={() => handleAction(candidato.id, "recusar")}
-                          className="text-red-600 hover:text-red-900 font-semibold text-sm"
+                          className="text-danger hover:opacity-75 font-semibold text-sm cursor-pointer"
                         >
                           RECUSAR
                         </button>
@@ -234,8 +235,7 @@ export default function AdminIntencoesPage() {
             </tbody>
           </table>
         </div>
-      )}
-         {" "}
+      )}{" "}
     </div>
   );
 }

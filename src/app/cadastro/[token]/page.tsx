@@ -1,5 +1,3 @@
-// src/app/cadastro/[token]/page.tsx
-
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -125,23 +123,23 @@ export default function CadastroCompletoPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p className="text-gray-500">Carregando convite...</p>
+        <p className="text-muted">Carregando convite...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-lg">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">
+    <div className="min-h-screen flex items-center justify-center bg-accent py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 p-10 bg-input rounded-xl shadow-lg">
+        <h1 className="text-center text-3xl font-extrabold text-black">
           Finalizar Cadastro de Membro
-        </h2>
+        </h1>
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          <div className="bg-destructive border border-destructive text-destructive-foreground px-4 py-3 rounded relative">
             {error}
           </div>
         )}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6 text-black" onSubmit={handleSubmit}>
           {/* Campo Nome (Pré-preenchido e desabilitado) */}
           <InputField
             label="Nome Completo"
@@ -151,6 +149,7 @@ export default function CadastroCompletoPage() {
             placeholder="Seu nome"
             type="text"
             disabled={true}
+            className="placeholder:text-black"
           />
 
           {/* Campo Email (Pré-preenchido e desabilitado) */}
@@ -162,6 +161,7 @@ export default function CadastroCompletoPage() {
             placeholder="seu.email@empresa.com"
             type="email"
             disabled={true}
+            className="placeholder:text-black"
           />
 
           {/* Campo Empresa (ADICIONADO - Pré-preenchido e desabilitado) */}
@@ -173,6 +173,7 @@ export default function CadastroCompletoPage() {
             placeholder="Nome da empresa"
             type="text"
             disabled={true}
+            className="placeholder:text-black"
           />
 
           {/* Campo Telefone */}
@@ -184,6 +185,7 @@ export default function CadastroCompletoPage() {
             placeholder="(xx) xxxxx-xxxx"
             type="tel"
             required
+            className="placeholder:text-muted border-2 rounded-xl border-black p-2"
           />
 
           {/* Campo Cargo */}
@@ -195,12 +197,13 @@ export default function CadastroCompletoPage() {
             placeholder="Ex: CEO, Gerente de Vendas"
             type="text"
             required
+            className="placeholder:text-muted border-2 rounded-xl border-black p-2"
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-foreground bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
           >
             {loading ? "Finalizando..." : "Concluir Cadastro"}
           </button>

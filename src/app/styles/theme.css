@@ -1,0 +1,63 @@
+:root {
+  --color-base: #1f2937; /* gray-800 */
+  /* Tamanhos de fonte base para mobile-first */
+  --font-size-h2: 1.875rem;
+  --font-size-h3: 1.5rem;
+  --font-size-p: 1rem;
+  --font-size-small: 0.875rem;
+
+  /* Ajustes para telas maiores (tablets e desktops) */
+  @media (min-width: 768px) {
+    --font-size-h1: 3rem; /* 48px */
+    --font-size-h2: 2.25rem; /* 36px */
+    --font-size-h3: 1.875rem; /* 30px */
+  }
+
+  /* ------------------------- */
+  /* ESTILOS GLOBAIS DE TEXTO  */
+  /* ------------------------- */
+  h1,
+  .h1 {
+    font-weight: 800;
+    margin-bottom: 2rem;
+  }
+
+  h2,
+  .h2 {
+    font-size: var(--font-size-h2);
+    font-weight: 700; /* bold */
+    color: var(--color-text-base);
+    margin-bottom: 0.75rem;
+  }
+
+  h3,
+  .h3 {
+    font-size: var(--font-size-h3);
+    font-weight: 600; /* semibold */
+    color: var(--color-text-base);
+    margin-bottom: 0.5rem;
+  }
+
+  p,
+  .p {
+    font-size: var(--font-size-p);
+    line-height: 1.6;
+  }
+
+  a,
+  .a {
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+
+  a:hover,
+  .a:hover {
+    text-decoration: underline;
+    color: var(--color-primary-hover);
+  }
+
+  small {
+    font-size: var(--font-size-small);
+    color: var(--color-text-subtle);
+  }
+}
