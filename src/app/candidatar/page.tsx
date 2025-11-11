@@ -1,31 +1,7 @@
 "use client"; // Componente de Cliente para usar hooks e interatividade
 
 import { useState } from "react";
-
-// Componente Básico de Input (Reutilizável)
-const InputField = ({
-  label,
-  id,
-  ...props
-}: {
-  label: string;
-  id: string;
-  type: string;
-  value: string;
-  onChange: (e: any) => void;
-  required: boolean;
-}) => (
-  <div className="mb-4">
-    <label htmlFor={id} className="block text-sm font-medium">
-      {label}
-    </label>
-    <input
-      id={id}
-      className="mt-1 block w-full rounded-md border border-muted p-3 shadow-sm"
-      {...props}
-    />
-  </div>
-);
+import InputField from "../../components/ui/InputField";
 
 export default function CandidatarPage() {
   const [formData, setFormData] = useState({
@@ -103,6 +79,7 @@ export default function CandidatarPage() {
           <InputField
             label="Nome Completo"
             id="nome"
+            name="nome"
             type="text"
             value={formData.nome}
             onChange={handleChange}
@@ -111,6 +88,7 @@ export default function CandidatarPage() {
           <InputField
             label="E-mail"
             id="email"
+            name="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
@@ -119,6 +97,7 @@ export default function CandidatarPage() {
           <InputField
             label="Empresa"
             id="empresa"
+            name="empresa"
             type="text"
             value={formData.empresa}
             onChange={handleChange}
