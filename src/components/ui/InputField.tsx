@@ -1,5 +1,3 @@
-// src/components/ui/InputField.tsx
-
 import React from "react";
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -8,7 +6,6 @@ interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const InputField: React.FC<InputFieldProps> = ({ label, name, ...props }) => {
-  // Garantir que temos um ID para acessibilidade
   const inputId = props.id || name;
 
   return (

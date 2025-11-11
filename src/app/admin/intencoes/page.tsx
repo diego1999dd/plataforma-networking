@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAdminAuth } from "../../../hooks/useAdminAuth";
 import { authenticatedFetch } from "../../../lib/apiFetcher";
 
-// Definição dos tipos de dados (Mantido inalterado)
+
 interface Candidatura {
   id: number;
   nome: string;
@@ -111,7 +111,7 @@ export default function AdminIntencoesPage() {
 
   if (error) {
     return (
-      // Usando bg-danger-light e text-danger (inferidos das suas vars)
+      
       <div className="p-8 text-center bg-danger-light border border-danger-light rounded-lg m-10">
         <h2 className="text-xl font-semibold text-danger">Erro:</h2>
         <p className="text-danger">{error}</p>
@@ -133,18 +133,18 @@ export default function AdminIntencoesPage() {
 
   return (
     <div className="container mx-auto p-8 ">
-      {/* Usando text-primary2 para o título principal */}
+      
       <h1 className="text-3xl font-extrabold mb-6 text-primary2">
         Gestão de Candidaturas ({candidaturas.length})
       </h1>
       {candidaturas.length === 0 ? (
         <p className="text-muted">Nenhuma candidatura encontrada.</p>
       ) : (
-        // Tabela principal: Usando bg-accent para o container (para bom contraste)
+        
         <div className="overflow-x-auto bg-accent shadow-lg rounded-lg">
-          {/* Tabela */}
+          
           <table className="min-w-full divide-y divide-muted">
-            {/* Cabeçalho da Tabela - Usando bg-bg e text-muted */}
+            
             <thead className="bg-bg">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">
@@ -165,13 +165,13 @@ export default function AdminIntencoesPage() {
               </tr>
             </thead>
 
-            {/* Corpo da Tabela - Usando divide-muted2 para divisores de linha */}
+            
             <tbody className="bg-accent divide-y divide-muted2">
               {candidaturas.map((candidato) => (
                 <tr
                   key={candidato.id}
                   className={
-                    // Destaque para PENDENTE com a cor de background customizada
+                    
                     candidato.status === "PENDENTE" ? "bg-bg" : "bg-accent"
                   }
                 >
@@ -198,14 +198,14 @@ export default function AdminIntencoesPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 accentspace-nowrap">
-                    {/* Aplicação das cores de Status (Badges) */}
+                    
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         candidato.status === "APROVADA"
-                          ? "bg-light text-success" // SUCCESS (cores customizadas)
+                          ? "bg-light text-success" 
                           : candidato.status === "RECUSADA"
-                          ? "bg-danger-light text-danger" // DANGER (cores customizadas)
-                          : // PENDENTE: Usando Tailwind padrão (amarelo) como cor de Warning
+                          ? "bg-danger-light text-danger" 
+                          : 
                             "bg-yellow-100 text-yellow-800"
                       }`}
                     >

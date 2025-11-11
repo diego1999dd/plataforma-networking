@@ -14,7 +14,7 @@ export default function HomePage() {
       </p>
 
       <div className="container mx-auto items-center justify-center flex flex-col space-y-6 sm:flex-row sm:space-x-8 sm:space-y-0 ">
-        {/* Link para o Fluxo Público */}
+        
         <Link
           href="/candidatar"
           className="bg-primary hover:bg-accent text-accent font-bold py-4 px-8 rounded-full shadow-lg text-center transition-colors duration-200 cursor-pointer w-full sm:w-auto !no-underline "
@@ -22,7 +22,7 @@ export default function HomePage() {
           Quero me Candidatar
         </Link>
 
-        {/* Link para o Fluxo Admin */}
+        
         <Link
           href="/admin"
           className="bg-danger text-accent font-bold py-4 px-8 rounded-full shadow-lg text-center transition-colors duration-200 cursor-pointer w-full sm:w-auto !no-underline "

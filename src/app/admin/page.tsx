@@ -10,16 +10,16 @@ export default function AdminLoginPage() {
   const [inputKey, setInputKey] = useState("");
   const [error, setError] = useState("");
 
-  // 1. GERENCIAMENTO DO REDIRECIONAMENTO IMEDIATO
+  
   useEffect(() => {
-    // A decisão de redirecionar só ocorre se a leitura do localStorage terminou E se está autenticado
+    
     if (!isLoading && isAuthenticated) {
-      // Usar replace evita que a página de login fique no histórico
+      
       router.replace("/admin/intencoes");
     }
   }, [isAuthenticated, isLoading, router]);
 
-  // 2. RENDERIZAÇÃO DE CARREGAMENTO PARA EVITAR HYDRATION ERROR E PISCA-PISCA
+  
   if (isLoading || isAuthenticated) {
     return (
       <div className="min-h-screen bg-accent flex items-center justify-center text-xl font-bold text-foreground">
@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
 
     if (inputKey && inputKey.length > 5) {
       setApiKey(inputKey);
-      // O useEffect acima irá disparar o router.replace() na próxima renderização
+      
     } else {
       setError("Por favor, insira uma chave de administrador válida.");
     }

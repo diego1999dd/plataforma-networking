@@ -1,12 +1,10 @@
-// frontend/src/hooks/useAdminAuth.ts
-
 import { useEffect, useState } from "react";
 
 export interface AdminAuth {
   apiKey: string;
   setApiKey: (key: string) => void;
   isAuthenticated: boolean;
-  isLoading: boolean; // Estado para sincronizar a leitura do localStorage
+  isLoading: boolean; 
   clearAuth: () => void;
 }
 
@@ -15,10 +13,10 @@ export const useAdminAuth = (): AdminAuth => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Apenas executa no CLIENTE (após a hidratação):
+    
     const storedKey = localStorage.getItem("adminKey") || "";
     setApiKey(storedKey);
-    setIsLoading(false); // Marca o carregamento como concluído
+    setIsLoading(false); 
   }, []);
 
   const setKey = (key: string) => {

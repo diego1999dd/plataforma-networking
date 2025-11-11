@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import InputField from "../../../components/ui/InputField";
 import { apiFetcher } from "../../../lib/apiFetcher";
 
-// O DTO do seu backend (CompletarCadastroDto)
+
 interface CompletarCadastroPayload {
   nome: string;
   email: string;
@@ -22,8 +22,8 @@ interface CandidaturaData {
 }
 
 interface ConviteResponse {
-  // Outros campos do Convite (id, token, isUsado...)
-  candidatura: CandidaturaData; // O objeto que contém nome e email
+  
+  candidatura: CandidaturaData; 
 }
 
 export default function CadastroCompletoPage() {
@@ -42,13 +42,13 @@ export default function CadastroCompletoPage() {
   });
 
   const isUUID = (str: string) => {
-    // Verifica o formato básico do UUID
+    
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
       str
     );
   };
 
-  // 1. Hook para buscar os dados iniciais do convite
+  
   const fetchConviteData = useCallback(async () => {
     if (!token || token === "token" || !isUUID(token)) {
       setError("Token de convite não encontrado.");
@@ -57,16 +57,16 @@ export default function CadastroCompletoPage() {
     }
 
     try {
-      // Endpoint para buscar o convite e validar o token
+      
       const data = await apiFetcher<ConviteResponse>(`convites/${token}`);
 
-      // Pré-preenchemos com dados da candidatura aprovada
+      
       setForm({
         ...form,
         nome: data.candidatura.nome,
         email: data.candidatura.email,
         empresa: data.candidatura.empresa,
-        // O restante dos campos serão preenchidos pelo usuário
+        
       });
       setLoading(false);
     } catch (err: any) {
@@ -86,13 +86,13 @@ export default function CadastroCompletoPage() {
     });
   };
 
-  // 2. Função para submeter o cadastro completo
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    // 🛑 VERIFICAÇÃO DE NOVO AQUI ANTES DE CHAMAR O BACKEND
+    
     if (!token || token === "token" || !isUUID(token)) {
       setError(
         "Token de convite inválido ou ausente. Não é possível finalizar o cadastro."
@@ -102,15 +102,15 @@ export default function CadastroCompletoPage() {
     }
 
     try {
-      // Endpoint de cadastro completo no seu NestJS
+      
       await apiFetcher(`convites/${token}/completar/`, {
         method: "POST",
         body: JSON.stringify(form),
       });
 
-      // Sucesso: Redireciona para uma página de sucesso ou login
+      
       alert("Cadastro concluído com sucesso! Você já é um membro ativo.");
-      router.push("/cadastro/sucesso"); // Ou para a página de login
+      router.push("/cadastro/sucesso"); 
     } catch (err: any) {
       setError(
         err.message || "Erro ao finalizar cadastro. Verifique os dados."
@@ -140,7 +140,7 @@ export default function CadastroCompletoPage() {
           </div>
         )}
         <form className="mt-8 space-y-6 text-black" onSubmit={handleSubmit}>
-          {/* Campo Nome (Pré-preenchido e desabilitado) */}
+          
           <InputField
             label="Nome Completo"
             name="nome"
@@ -152,7 +152,7 @@ export default function CadastroCompletoPage() {
             className="placeholder:text-black"
           />
 
-          {/* Campo Email (Pré-preenchido e desabilitado) */}
+          
           <InputField
             label="Email"
             name="email"
@@ -164,7 +164,7 @@ export default function CadastroCompletoPage() {
             className="placeholder:text-black"
           />
 
-          {/* Campo Empresa (ADICIONADO - Pré-preenchido e desabilitado) */}
+          
           <InputField
             label="Empresa (Aprovada)"
             name="empresa"
@@ -176,7 +176,7 @@ export default function CadastroCompletoPage() {
             className="placeholder:text-black"
           />
 
-          {/* Campo Telefone */}
+          
           <InputField
             label="Telefone (com DDD)"
             name="telefone"
@@ -188,7 +188,7 @@ export default function CadastroCompletoPage() {
             className="placeholder:text-muted border-2 rounded-xl border-black p-2"
           />
 
-          {/* Campo Cargo */}
+          
           <InputField
             label="Seu Cargo na Empresa"
             name="funcao"

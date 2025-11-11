@@ -10,7 +10,7 @@ export default function CadastroSucessoPage() {
     >
       <div className=" p-10 rounded-xl shadow-2xl w-full max-w-md text-center">
         <div className="text-6xl mb-6">
-          {/* Símbolo de sucesso ou um emoji */}
+          
           🎉
         </div>
         <h1 className="text-3xl font-extrabold mb-4 text-accent">
@@ -20,7 +20,7 @@ export default function CadastroSucessoPage() {
           Parabéns! Sua conta de membro ativo foi criada.
         </p>
 
-        {/* Botão para a próxima ação lógica */}
+        
         <Link href="/" passHref>
           <div className="w-full py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-black bg-primary transition-colors duration-200 cursor-pointer">
             Voltar para a Home (e Futuro Login)
