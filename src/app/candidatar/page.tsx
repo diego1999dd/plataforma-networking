@@ -43,7 +43,7 @@ export default function CandidatarPage() {
     setStatus("Enviando...");
 
     try {
-      // 🔗 Chamada ao Backend (Usando a variável de ambiente)
+      // Chamada ao Backend (Usando a variável de ambiente)
       const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
       const response = await fetch(`${apiUrl}/candidaturas`, {
