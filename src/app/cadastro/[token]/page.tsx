@@ -15,7 +15,6 @@ interface CompletarCadastroPayload {
   telefone: string;
   empresa: string;
   funcao: string;
-  senha: string;
 }
 
 interface CandidaturaData {
@@ -42,7 +41,6 @@ export default function CadastroCompletoPage() {
     telefone: "",
     empresa: "",
     funcao: "",
-    senha: "",
   });
 
   const isUUID = (str: string) => {
@@ -166,6 +164,17 @@ export default function CadastroCompletoPage() {
             disabled={true}
           />
 
+          {/* Campo Empresa (ADICIONADO - Pré-preenchido e desabilitado) */}
+          <InputField
+            label="Empresa (Aprovada)"
+            name="empresa"
+            value={form.empresa}
+            onChange={handleChange}
+            placeholder="Nome da empresa"
+            type="text"
+            disabled={true}
+          />
+
           {/* Campo Telefone */}
           <InputField
             label="Telefone (com DDD)"
@@ -185,17 +194,6 @@ export default function CadastroCompletoPage() {
             onChange={handleChange}
             placeholder="Ex: CEO, Gerente de Vendas"
             type="text"
-            required
-          />
-
-          {/* Campo Senha */}
-          <InputField
-            label="Defina sua Senha"
-            name="senha"
-            value={form.senha}
-            onChange={handleChange}
-            placeholder="Mínimo 8 caracteres"
-            type="password"
             required
           />
 
