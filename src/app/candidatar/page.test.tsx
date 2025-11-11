@@ -3,7 +3,7 @@ import userEvent, { UserEvent } from "@testing-library/user-event";
 import CandidatarPage from "./page";
 
 /// <reference types="@testing-library/jest-dom" />
-
+//
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
@@ -59,7 +59,7 @@ describe("CandidatarPage (Teste de Componente com RTL)", () => {
   it("1. Deve preencher e submeter o formulário com sucesso, exibindo a mensagem de aprovação", async () => {
     const { user } = setup();
 
-    let resolvePromise: PromiseResolver; 
+    let resolvePromise: PromiseResolver;
     mockFetch.mockImplementationOnce(
       () =>
         new Promise((resolve) => {
@@ -75,7 +75,7 @@ describe("CandidatarPage (Teste de Componente com RTL)", () => {
 
     expect(
       screen.getByRole("button", { name: /Enviando Solicitação.../i })
-    ).toBeDisabled(); 
+    ).toBeDisabled();
 
     await act(async () => {
       resolvePromise({
@@ -87,9 +87,9 @@ describe("CandidatarPage (Teste de Componente com RTL)", () => {
     expect(mockFetch).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText(/✅ Candidatura enviada com sucesso!/i)
-    ).toBeInTheDocument(); 
+    ).toBeInTheDocument();
 
-    expect(screen.getByLabelText(/Nome Completo/i)).toHaveValue(""); 
+    expect(screen.getByLabelText(/Nome Completo/i)).toHaveValue("");
   });
 
   it("2. Deve mostrar uma mensagem de erro se a requisição de rede falhar", async () => {
@@ -106,6 +106,6 @@ describe("CandidatarPage (Teste de Componente com RTL)", () => {
     const errorMessage = await screen.findByText(
       /❌ Erro de conexão com o servidor/i
     );
-    expect(errorMessage).toBeInTheDocument(); 
+    expect(errorMessage).toBeInTheDocument();
   });
 });
