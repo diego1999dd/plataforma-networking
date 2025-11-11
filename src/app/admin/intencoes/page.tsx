@@ -7,35 +7,40 @@ import { useRouter } from "next/navigation";
 import { useAdminAuth } from "../../../hooks/useAdminAuth";
 import { authenticatedFetch } from "../../../lib/apiFetcher";
 
-// Assumindo que você criou a pasta 'hooks' e 'lib' no seu frontend/src
-
-// Definição dos tipos de dados (Deve espelhar a entidade Candidatura do Backend)
+// Definição dos tipos de dados (Mantido inalterado)
 interface Candidatura {
   id: number;
   nome: string;
   email: string;
   empresa: string;
   motivoParticipacao: string;
-  status: "PENDENTE" | "APROVADA" | "RECUSADA"; // Usa os valores do seu StatusCandidatura Enum
+  status: "PENDENTE" | "APROVADA" | "RECUSADA";
   dataCriacao: string;
 }
 
 export default function AdminIntencoesPage() {
-  const router = useRouter();
-  const { apiKey, isAuthenticated, clearAuth } = useAdminAuth();
+  const router = useRouter(); // Renomeamos isLoading do hook para evitar confusão com isLoadingData
+  const {
+    apiKey,
+    isAuthenticated,
+    clearAuth,
+    isLoading: isLoadingHook,
+  } = useAdminAuth();
 
   const [candidaturas, setCandidaturas] = useState<Candidatura[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [isLoadingData, setIsLoadingData] = useState(true); // Carregamento da requisição de dados
+  const [error, setError] = useState(""); // Função para buscar os dados (GET /admin/candidaturas)
 
-  // Função para buscar os dados (GET /admin/candidaturas)
   const fetchCandidaturas = useCallback(async () => {
-    if (!apiKey) return;
-    setIsLoading(true);
+    if (!apiKey) {
+      setIsLoadingData(false);
+      return;
+    }
+
+    setIsLoadingData(true);
     setError("");
 
     try {
-      // 1. Chamada GET /admin/candidaturas (protegida)
       const data = await authenticatedFetch<Candidatura[]>(
         "/admin/candidaturas",
         apiKey,
@@ -44,28 +49,36 @@ export default function AdminIntencoesPage() {
       setCandidaturas(data);
     } catch (err: any) {
       if (err.message.includes("Acesso não autorizado")) {
-        // Se a chave for rejeitada, limpa o token e redireciona para o login
+        // 🛑 PONTO CRÍTICO: Limpa a chave, usa replace e SAI imediatamente
         clearAuth();
-        router.push("/admin");
-      } else {
-        setError(err.message);
+        router.replace("/admin");
+        return;
       }
+      setError(err.message);
     } finally {
-      setIsLoading(false);
+      setIsLoadingData(false);
     }
-  }, [apiKey, router, clearAuth]);
+  }, [apiKey, router, clearAuth]); // Efeito para proteção de rota e carregar dados
 
-  // Efeito para carregar os dados (proteção de rota inicial)
   useEffect(() => {
-    if (!isAuthenticated) {
-      // Se não houver chave no hook, redireciona para a tela de 'login'
-      router.push("/admin");
-    } else {
+    // 1. Redirecionamento de proteção (se o hook já leu o localStorage E não está autenticado)
+    if (!isLoadingHook && !isAuthenticated) {
+      router.replace("/admin");
+      return; // << SAÍDA IMEDIATA DO USEEFFECT
+    }
+
+    // 2. Busca de dados (só se autenticado E a leitura do localStorage terminou)
+    if (!isLoadingHook && isAuthenticated && isLoadingData) {
       fetchCandidaturas();
     }
-  }, [isAuthenticated, fetchCandidaturas, router]);
+  }, [
+    isAuthenticated,
+    router,
+    isLoadingHook,
+    isLoadingData,
+    fetchCandidaturas,
+  ]); // Função de Ação (POST /aprovar ou /recusar) - Mantido inalterado
 
-  // Função de Ação (POST /aprovar ou /recusar)
   const handleAction = async (id: number, action: "aprovar" | "recusar") => {
     if (
       !confirm(
@@ -77,31 +90,26 @@ export default function AdminIntencoesPage() {
       return;
 
     try {
-      // 2. Chamada POST /admin/candidaturas/:id/aprovar ou /recusar
-      const response = await authenticatedFetch(
-        `/admin/candidaturas/${id}/${action}`,
-        apiKey,
-        { method: "POST" }
-      );
+      await authenticatedFetch(`/admin/candidaturas/${id}/${action}`, apiKey, {
+        method: "POST",
+      });
 
-      // Atualiza a lista e notifica o usuário
       alert(
         `Candidatura ${id} ${
           action === "aprovar" ? "APROVADA" : "RECUSADA"
         } com sucesso!`
       );
 
-      // Atualiza a lista após o sucesso
       fetchCandidaturas();
     } catch (err: any) {
       alert(`Falha na ação: ${err.message}`);
     }
-  };
+  }; // RENDERIZAÇÃO: Mostrar carregando se o hook ou os dados estiverem em trânsito
 
-  if (isLoading) {
+  if (isLoadingHook || isLoadingData) {
     return (
       <div className="flex justify-center items-center h-screen text-xl">
-        Carregando candidaturas...
+                Carregando candidaturas...      {" "}
       </div>
     );
   }
@@ -109,30 +117,33 @@ export default function AdminIntencoesPage() {
   if (error) {
     return (
       <div className="p-8 text-center text-red-700 bg-red-100 border-red-500 border rounded-lg m-10">
-        <h2 className="text-xl font-semibold">Erro:</h2>
-        <p>{error}</p>
+                <h2 className="text-xl font-semibold">Erro:</h2>       {" "}
+        <p>{error}</p>       {" "}
         <button
           onClick={fetchCandidaturas}
           className="mt-4 text-blue-500 hover:underline"
         >
-          Tentar Novamente
+                    Tentar Novamente        {" "}
         </button>
+               {" "}
         <button
           onClick={clearAuth}
           className="mt-4 ml-4 text-red-500 hover:underline"
         >
-          Trocar Chave
+                    Trocar Chave        {" "}
         </button>
+             {" "}
       </div>
     );
   }
 
   return (
     <div className="container mx-auto p-8">
+           {" "}
       <h1 className="text-3xl font-extrabold mb-6 text-indigo-700">
-        Gestão de Candidaturas ({candidaturas.length})
+                Gestão de Candidaturas ({candidaturas.length})      {" "}
       </h1>
-
+           {" "}
       {candidaturas.length === 0 ? (
         <p className="text-gray-600">Nenhuma candidatura encontrada.</p>
       ) : (
@@ -224,6 +235,7 @@ export default function AdminIntencoesPage() {
           </table>
         </div>
       )}
+         {" "}
     </div>
   );
 }
